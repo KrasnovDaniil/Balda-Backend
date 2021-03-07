@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 // This class also unnecessary for application work, it was created beforehand
 // It represents message entity in DB
 @Entity
-@Table(name = "messages")
+@Table(name = "usersnew")
 public class Message {
 
     public enum MessageType {
@@ -19,7 +19,7 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "content")
     private String content;
@@ -46,7 +46,7 @@ public class Message {
         this.roomID = roomID;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -54,4 +54,10 @@ public class SocketController {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         messagingTemplate.convertAndSend(format("/chat-channel/%s", roomId), chatMessage);
     }
+
+    @MessageMapping("/chat/{roomId}/deleteUser")
+    public void deleteUser(@DestinationVariable String roomId, @Payload Message chatMessage){
+
+    }
+
 }

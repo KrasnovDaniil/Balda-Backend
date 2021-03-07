@@ -2,12 +2,12 @@ package ru.examples.models;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
+@Table(name = "\"users\"", schema = "public")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -50,7 +50,7 @@ public class User {
         this.email = email;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
