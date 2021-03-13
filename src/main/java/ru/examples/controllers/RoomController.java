@@ -21,21 +21,23 @@ public class RoomController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+    /**
+    Here I insert all messages from spec room for displaying that in chatRoom further
+    Displaying will be implemented by frntnd accordingly some rules
+     */
     @GetMapping("getHistory")
     public List<MessageDto> getChatRoomMessages(@PathVariable(name = "roomID") long roomId){
         // JDBCTemplate code
         String getMessagesAtPreparedForm = "SELECT * from get_messages_in_prepared_form(?)";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(getMessagesAtPreparedForm, roomId);
 //        String origin = "select \"Users\".user_name, \"Room_messages\".message_content, sending_time from \"Room_messages\" join \"Users\"\n" +
 //                " on \"Room_messages\".rm_user_id = \"Users\".user_id where rm_room_id = 1 order by sending_time asc";
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(getMessagesAtPreparedForm, roomId);
 //        List<Map<String, Object>> list1 = jdbcTemplate.queryForList(origin);
 
         List<MessageDto> messages = jdbcTemplate.query(getMessagesAtPreparedForm, new Object[] {roomId}, new RowMapper<MessageDto> () {
             @Override
             public MessageDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                Object s1 = rs.getObject(1);
-//                String q1 = rs.getString(2);
-//                Timestamp w1 = rs.getTimestamp(3);
 
                 return MessageDto.builder()
                         .sender(rs.getString(1))
