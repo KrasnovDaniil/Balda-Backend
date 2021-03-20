@@ -1,4 +1,5 @@
 
-/.idea
 /SpringRESTapiLearning.iml
 /target
+/.idea/
+/.vscode/
