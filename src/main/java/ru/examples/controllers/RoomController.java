@@ -31,10 +31,6 @@ public class RoomController {
         // JDBCTemplate code
         String getMessagesAtPreparedForm = "SELECT * from get_messages_in_prepared_form(?)";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(getMessagesAtPreparedForm, roomId);
-//        String origin = "select \"Users\".user_name, \"Room_messages\".message_content, sending_time from \"Room_messages\" join \"Users\"\n" +
-//                " on \"Room_messages\".rm_user_id = \"Users\".user_id where rm_room_id = 1 order by sending_time asc";
-//        List<Map<String, Object>> list1 = jdbcTemplate.queryForList(origin);
-
         List<MessageDto> messages = jdbcTemplate.query(getMessagesAtPreparedForm, new Object[] {roomId}, new RowMapper<MessageDto> () {
             @Override
             public MessageDto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -47,6 +43,8 @@ public class RoomController {
             }
         });
         return messages;
+        //        String origin = "select \"Users\".user_name, \"Room_messages\".message_content, sending_time from \"Room_messages\" join \"Users\"\n" +
+        //                " on \"Room_messages\".rm_user_id = \"Users\".user_id where rm_room_id = 1 order by sending_time asc";
     }
 
 

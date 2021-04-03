@@ -3,7 +3,7 @@ package ru.examples.models;
 import javax.persistence.*;
 
 @Entity(name = "users")
-@Table(name = "\"users\"", schema = "public")
+@Table(name = "\"Users\"", schema = "public")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

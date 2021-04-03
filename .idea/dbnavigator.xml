@@ -30,7 +30,7 @@
       <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
     <connection id="f0d1428b-8cc7-486f-8a0f-cfd7972bbfd5">
-      <console name="Conn to Balda_DB" type="STANDARD" schema="information_schema" session="Main" />
+      <console name="Conn to Balda_DB" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
