@@ -1,6 +1,8 @@
 package ru.examples.models;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,41 +12,45 @@ import java.time.LocalDateTime;
 // This class also unnecessary for application work, it was created beforehand
 // It represents message entity in DB
 @Entity
-@Table(name = "usersnew")
+@Table(name = "\"Room_messages\"")
+@Builder
+@AllArgsConstructor
 public class Message {
-
-    public enum MessageType {
-        CHAT, JOIN, LEAVE
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_message_id")
     private Long id;
 
-    @Column(name = "content")
+    // only for identifying room where messages are sent, further it should be replaced on room_id
+    @Column(name = "room_id")
+    private Long room_id;
+
+    @Column(name = "user_id")
+    private long user_id;
+
+    @Column(name = "message_content")
     private String content;
 
-    @Column(name = "sender")
-    private String sender;
-
     @CreationTimestamp
-    @Column(name = "creation_date")
+    @Column(name = "sending_time")
     private LocalDateTime timestamp;
 
-    @Column(name = "room_ID")
-    private long roomID;
 
-    @Column(name = "type")
-    private MessageType type;
+//    @Column(name = "sender")
+//    private String sender;
 
+    // I guess that field should be add in DB
+//    @Column(name = "type")
+//    private MessageType type;
 
     public Message(){}
+//    public Message(String content, String sender, String roomID) {
+//        this.content = content;
+//        this.sender = sender;
+//        this.room_name = roomID;
+//    }
 
-    public Message(String content, String sender, long roomID) {
-        this.content = content;
-        this.sender = sender;
-        this.roomID = roomID;
-    }
 
     public Long getId() {
         return id;
@@ -54,13 +60,13 @@ public class Message {
         this.id = id;
     }
 
-    public String getSender() {
-        return sender;
-    }
+//    public String getSender() {
+//        return sender;
+//    }
 
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
+//    public void setSender(String sender) {
+//        this.sender = sender;
+//    }
 
     public String getContent() {
         return content;
@@ -70,19 +76,28 @@ public class Message {
         this.content = content;
     }
 
-    public long getRoomID() {
-        return roomID;
+    public Long getRoom_id() {
+        return room_id;
     }
 
-    public void setRoomID(long roomID) {
-        this.roomID = roomID;
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
     }
 
-    public MessageType getType() {
-        return type;
+//    public MessageType getType() {
+//        return type;
+//    }
+
+//    public void setType(MessageType type) {
+//        this.type = type;
+//    }
+
+    public long getUser_id() {
+        return user_id;
     }
 
-    public void setType(MessageType type) {
-        this.type = type;
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
     }
 }
+

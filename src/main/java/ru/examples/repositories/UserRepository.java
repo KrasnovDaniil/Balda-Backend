@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findByFirstName(String userName);
+    Optional<User> findByUserName(String userName);
 
     // Optional is used for NotNullable responses, it's more convenient than just User type due to
     // no need to check response on null-value

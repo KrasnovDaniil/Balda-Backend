@@ -6,6 +6,7 @@ import ru.examples.models.User;
 import ru.examples.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 // For now this controller class purposes only for test getting data from DB
 // It doesn't influence on total work of app
@@ -30,8 +31,8 @@ public class UserController {
 
     // get user by its firstName
     @GetMapping("user-by-firstname/{userName}")
-    public List<User> getUser(@PathVariable String userName){
-        return userRepository.findByFirstName(userName);
+    public Optional<User> getUser(@PathVariable String userName){
+        return userRepository.findByUserName(userName);
     }
 
 }

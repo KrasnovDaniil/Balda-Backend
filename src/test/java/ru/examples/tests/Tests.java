@@ -33,8 +33,8 @@ public class Tests  {
     @Test
     public void testBasicQueries(){
         List list = userRepo.findAll();
-        List<User> u1 = userRepo.findByFirstName("Daniil");
-        List<User> u2 = userRepo.findByFirstName("Timur");
+        Optional<User> u1 = userRepo.findByUserName("Adam");
+        Optional<User> u2 = userRepo.findByUserName("Timur");
 
         Optional<User> u3 = userRepo.findById(2L);
         Optional<User> u4 = userRepo.findById(3L);
@@ -43,7 +43,7 @@ public class Tests  {
 
     @Test
     public void testBadQueries(){
-        List<User> nonexistentUser1 = userRepo.findByFirstName("Ivan");
+        Optional<User> nonexistentUser1 = userRepo.findByUserName("Ivan");
         Optional<User> nonexistentUser2 = userRepo.findById(10L);
     }
 }
