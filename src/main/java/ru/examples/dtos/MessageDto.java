@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.examples.models.Message;
+import ru.examples.models.MessageType;
 
 import java.sql.Timestamp;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,9 +22,11 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDto {
-    Long message_id;
-    String content;
-    Timestamp sendingTime;
+
     String sender;
-    
+    String content;
+    String room_name;
+    Timestamp sendingTime;
+    MessageType type;
+
 }

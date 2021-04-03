@@ -8,22 +8,27 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import ru.examples.dtos.MessageDto;
 import ru.examples.models.Message;
-import ru.examples.models.Message.MessageType;
+import ru.examples.models.MessageType;
 import ru.examples.repositories.MessageRepository;
+import ru.examples.services.implementations.MessageServiceImpl;
+
 
 import static java.lang.String.format;
 
 @Controller
 public class SocketController {
 
-    private MessageRepository messageRepo;
-    private SimpMessageSendingOperations messagingTemplate;
+    private final MessageRepository messageRepo;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final MessageServiceImpl messageService;
 
     @Autowired
-    public SocketController(MessageRepository messageRepo, SimpMessageSendingOperations messagingTemplate){
+    public SocketController(MessageRepository messageRepo, SimpMessageSendingOperations messagingTemplate, MessageServiceImpl messageService){
         this.messageRepo = messageRepo;
         this.messagingTemplate = messagingTemplate;
+        this.messageService = messageService;
     }
 
     // 2-nd place where request will process by this method or controller on tag "/hello" like "app/hello"
@@ -36,23 +41,30 @@ public class SocketController {
 
     // send received message from client to this one
     @MessageMapping ("/chat/{roomId}/sendMessage")
-    public void sendMessage(@DestinationVariable String roomId, @Payload Message message){
-        messageRepo.save(message);
-        messagingTemplate.convertAndSend(format("/chat-channel/%s", roomId), message);
+    public void sendMessage(@DestinationVariable String roomId, @Payload MessageDto messageDto){
+        Message castedMessage = null;
+        try {
+            castedMessage = messageService.castDto2Entity(messageDto);
+            messageRepo.save(castedMessage);
+            messagingTemplate.convertAndSend(format("/chat-channel/%s", roomId), messageDto);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    @MessageMapping("/chat/{roomId}/addUser")
-    public void addUser(@DestinationVariable String roomId, @Payload Message chatMessage,
+    @MessageMapping("/chat/{room_name}/addUser")
+    public void addUser(@DestinationVariable String room_name, @Payload MessageDto chatMessageDto,
                         SimpMessageHeaderAccessor headerAccessor) {
-        String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_id", roomId);
+        String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_name", room_name);
         if (currentRoomId != null) {
-            Message leaveMessage = new Message();
-            leaveMessage.setType(MessageType.LEAVE);
-            leaveMessage.setSender(chatMessage.getSender());
+            MessageDto leaveMessage = MessageDto.builder()
+                    .type(MessageType.LEAVE)
+                    .sender(chatMessageDto.getSender()).build();
             messagingTemplate.convertAndSend(format("/chat-channel/%s", currentRoomId), leaveMessage);
         }
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        messagingTemplate.convertAndSend(format("/chat-channel/%s", roomId), chatMessage);
+        headerAccessor.getSessionAttributes().put("username", chatMessageDto.getSender());
+        messagingTemplate.convertAndSend(format("/chat-channel/%s", room_name), chatMessageDto);
     }
 
     @MessageMapping("/chat/{roomId}/deleteUser")

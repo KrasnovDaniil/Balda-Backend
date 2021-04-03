@@ -9,7 +9,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
 //    TODO: methods for message repository for far operations with messages (find, create, update, delete and so on)
 //    Message findMessageById(Long id);
-//
-//    List<Message> findMessageBySender(String sender);
+
+//    List<Message> findMessageByUser_Id(Long user_id);
+
+//    Long findByUser_id(Long user_id);
+
 
 }
